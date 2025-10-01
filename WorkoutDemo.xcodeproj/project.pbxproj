@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		5001B00C2E8D702F00BC6CF1 /* Swinject in Frameworks */ = {isa = PBXBuildFile; productRef = 5001B00B2E8D702F00BC6CF1 /* Swinject */; };
+		50C599D22E8DC0980064FD7A /* PinLayout in Frameworks */ = {isa = PBXBuildFile; productRef = 50C599D12E8DC0980064FD7A /* PinLayout */; };
 		50E3F0142E8D7B0E00955C54 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 50E3F0132E8D7B0E00955C54 /* SnapKit */; };
 /* End PBXBuildFile section */
 
@@ -41,6 +42,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				50C599D22E8DC0980064FD7A /* PinLayout in Frameworks */,
 				5001B00C2E8D702F00BC6CF1 /* Swinject in Frameworks */,
 				50E3F0142E8D7B0E00955C54 /* SnapKit in Frameworks */,
 			);
@@ -87,6 +89,7 @@
 			packageProductDependencies = (
 				5001B00B2E8D702F00BC6CF1 /* Swinject */,
 				50E3F0132E8D7B0E00955C54 /* SnapKit */,
+				50C599D12E8DC0980064FD7A /* PinLayout */,
 			);
 			productName = WorkoutDemo;
 			productReference = 50AA0ED22E8D638C00B3C0B0 /* WorkoutDemo.app */;
@@ -119,6 +122,7 @@
 			packageReferences = (
 				5001B00A2E8D702F00BC6CF1 /* XCRemoteSwiftPackageReference "Swinject" */,
 				50E3F0122E8D7B0E00955C54 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				50C599D02E8DC0980064FD7A /* XCRemoteSwiftPackageReference "PinLayout" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 50AA0ED32E8D638C00B3C0B0 /* Products */;
@@ -370,6 +374,14 @@
 				minimumVersion = 2.10.0;
 			};
 		};
+		50C599D02E8DC0980064FD7A /* XCRemoteSwiftPackageReference "PinLayout" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/layoutBox/PinLayout";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.10.6;
+			};
+		};
 		50E3F0122E8D7B0E00955C54 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit";
@@ -385,6 +397,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 5001B00A2E8D702F00BC6CF1 /* XCRemoteSwiftPackageReference "Swinject" */;
 			productName = Swinject;
+		};
+		50C599D12E8DC0980064FD7A /* PinLayout */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 50C599D02E8DC0980064FD7A /* XCRemoteSwiftPackageReference "PinLayout" */;
+			productName = PinLayout;
 		};
 		50E3F0132E8D7B0E00955C54 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
