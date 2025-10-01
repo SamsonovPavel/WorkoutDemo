@@ -1,0 +1,28 @@
+## User settings
+.DS_Store
+
+.build/
+DerivedData/
+
+## App packaging
+*.ipa
+*.app.dSym.zip
+*.dSYM.zip
+*.dSYM
+
+*.log
+
+## Xcode
+*.xcodeproj
+*.xcodeproj/*
+*.xcworkspace
+*.xcworkspace/*
+*.xcuserstate
+*.xcuserdata
+*.xcarchive
+
+## Swiftpm
+.swiftpm/config/registries.json
+.swiftpm/xcode/xcuserdata
+.swiftpm/xcode/package.xcworkspace
+.swiftpm/xcode/package.xcworkspace/contents.xcworkspacedata
