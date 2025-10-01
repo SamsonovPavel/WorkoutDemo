@@ -13,22 +13,22 @@ class TabBarViewController: UITabBarController {
     private var bindings = Set<AnyCancellable>()
     
     enum TabItemType: Int, CaseIterable {
-        case main
-        case workouts
+        case home
+        case listWorkout
         case aboutApp
 
         var icon: UIImage? {
             switch self {
-            case .main: UIImage(systemName: "figure.highintensity.intervaltraining.circle.fill")
-            case .workouts: UIImage(systemName: "list.clipboard")
+            case .home: UIImage(systemName: "figure.highintensity.intervaltraining.circle.fill")
+            case .listWorkout: UIImage(systemName: "list.clipboard")
             case .aboutApp: UIImage(systemName: "info")
             }
         }
         
         var title: String {
             switch self {
-            case .main: "Home"
-            case .workouts: "Workouts"
+            case .home: "Home"
+            case .listWorkout: "Workouts"
             case .aboutApp: "About"
             }
         }
