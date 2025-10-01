@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		5001B00C2E8D702F00BC6CF1 /* Swinject in Frameworks */ = {isa = PBXBuildFile; productRef = 5001B00B2E8D702F00BC6CF1 /* Swinject */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		50AA0ED22E8D638C00B3C0B0 /* WorkoutDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WorkoutDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -14,7 +18,7 @@
 		50AA0EE72E8D638D00B3C0B0 /* Exceptions for "WorkoutDemo" folder in "WorkoutDemo" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Info.plist,
+				Resources/Info.plist,
 			);
 			target = 50AA0ED12E8D638C00B3C0B0 /* WorkoutDemo */;
 		};
@@ -36,6 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5001B00C2E8D702F00BC6CF1 /* Swinject in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +83,7 @@
 			);
 			name = WorkoutDemo;
 			packageProductDependencies = (
+				5001B00B2E8D702F00BC6CF1 /* Swinject */,
 			);
 			productName = WorkoutDemo;
 			productReference = 50AA0ED22E8D638C00B3C0B0 /* WorkoutDemo.app */;
@@ -107,6 +113,9 @@
 			);
 			mainGroup = 50AA0EC92E8D638C00B3C0B0;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				5001B00A2E8D702F00BC6CF1 /* XCRemoteSwiftPackageReference "Swinject" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 50AA0ED32E8D638C00B3C0B0 /* Products */;
 			projectDirPath = "";
@@ -147,7 +156,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = TMU2L6AUDH;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = WorkoutDemo/Info.plist;
+				INFOPLIST_FILE = WorkoutDemo/Resources/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -181,7 +190,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = TMU2L6AUDH;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = WorkoutDemo/Info.plist;
+				INFOPLIST_FILE = WorkoutDemo/Resources/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -349,6 +358,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		5001B00A2E8D702F00BC6CF1 /* XCRemoteSwiftPackageReference "Swinject" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Swinject/Swinject";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.10.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		5001B00B2E8D702F00BC6CF1 /* Swinject */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5001B00A2E8D702F00BC6CF1 /* XCRemoteSwiftPackageReference "Swinject" */;
+			productName = Swinject;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 50AA0ECA2E8D638C00B3C0B0 /* Project object */;
 }
