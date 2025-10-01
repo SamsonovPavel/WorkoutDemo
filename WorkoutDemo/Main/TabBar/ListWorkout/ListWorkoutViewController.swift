@@ -47,10 +47,8 @@ class ListWorkoutViewController: BaseViewController {
     }
     
     private func setupTabBar() {
-        tabBarItem = UITabBarItem(
-            title: TabItemType.listWorkout.title,
-            image:  TabItemType.listWorkout.icon,
-            selectedImage:  TabItemType.listWorkout.icon
+        tabBarItem = Factory.tabBar.createTabBarItem(
+            tabItemType: .listWorkout
         )
     }
 }

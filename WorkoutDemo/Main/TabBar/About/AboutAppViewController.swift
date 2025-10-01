@@ -46,10 +46,8 @@ class AboutAppViewController: BaseViewController {
     }
     
     private func setupTabBar() {
-        tabBarItem = UITabBarItem(
-            title: TabItemType.aboutApp.title,
-            image:  TabItemType.aboutApp.icon,
-            selectedImage:  TabItemType.aboutApp.icon
+        tabBarItem = Factory.tabBar.createTabBarItem(
+            tabItemType: .aboutApp
         )
     }
 }

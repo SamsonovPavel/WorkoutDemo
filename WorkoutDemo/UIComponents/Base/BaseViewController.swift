@@ -13,14 +13,6 @@ class BaseViewController: UIViewController {
     var safeAreaLayout: UILayoutGuide {
         view.safeAreaLayoutGuide
     }
-    
-    var tabBarHeight: CGFloat {
-        if let tabBarController {
-            return tabBarController.tabBar.frame.height
-        }
-        
-        return 49
-    }
 
     var bindings = Set<AnyCancellable>()
 

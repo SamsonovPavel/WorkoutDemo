@@ -7,6 +7,7 @@
 
 import UIKit
 import Combine
+import SwiftUI
 
 class TabBarViewController: UITabBarController {
     
@@ -19,17 +20,17 @@ class TabBarViewController: UITabBarController {
 
         var icon: UIImage? {
             switch self {
-            case .home: UIImage(systemName: "figure.highintensity.intervaltraining.circle.fill")
-            case .listWorkout: UIImage(systemName: "list.clipboard")
+            case .home: UIImage(systemName: "figure.run")
+            case .listWorkout: UIImage(systemName: "list.bullet.rectangle.portrait")
             case .aboutApp: UIImage(systemName: "info")
             }
         }
         
         var title: String {
             switch self {
-            case .home: "Home"
-            case .listWorkout: "Workouts"
-            case .aboutApp: "About"
+            case .home: "Главная"
+            case .listWorkout: "Список"
+            case .aboutApp: "О приложении"
             }
         }
     }
@@ -40,9 +41,9 @@ class TabBarViewController: UITabBarController {
     }
     
     private func setupViews() {
-        tabBar.tintColor = .black
+        tabBar.tintColor = .systemBlue
         tabBar.backgroundColor = .white
-        tabBar.unselectedItemTintColor = .systemBlue
+        tabBar.unselectedItemTintColor = .systemGray
     }
     
     func didSelectTab(_ itemType: TabItemType) {

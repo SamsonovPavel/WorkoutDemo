@@ -54,21 +54,21 @@ class AppCoordinator: BaseCoordinator<Void> {
     }
 
     private func startSplashCoordinator() {
-//        let coordinator = SplashCoordinator(router)
-//        
-//        routeTo(coordinator, window: window)
-//            .receive(on: .mainQueue)
-//            .sink(receiveValue: startRoute)
-//            .store(in: &bindings)
+        let coordinator = SplashCoordinator(router: router)
+        
+        routeTo(coordinator, window: window)
+            .receive(on: .mainQueue)
+            .sink(receiveValue: startRoute)
+            .store(in: &bindings)
     }
 
     private func startOnboardingCoordinator() {
-//        let coordinator = OnboardingCoordinator(router)
-//        
-//        routeTo(coordinator, window: window)
-//            .receive(on: .mainQueue)
-//            .sink(receiveValue: startTabMain)
-//            .store(in: &bindings)
+        let coordinator = OnboardingCoordinator(router: router)
+        
+        routeTo(coordinator, window: window)
+            .receive(on: .mainQueue)
+            .sink(receiveValue: startTabMain)
+            .store(in: &bindings)
     }
     
     private func startTabCoordinator(_ tabItemType: TabItemType) {
@@ -82,6 +82,8 @@ class AppCoordinator: BaseCoordinator<Void> {
             .sink { _ in }
             .store(in: &bindings)
     }
+    
+    // MARK: - Route
     
     private func startRoute() {
         stateType = .onboarding

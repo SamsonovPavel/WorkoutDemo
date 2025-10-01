@@ -12,7 +12,6 @@ import SnapKit
 class HomeViewController: BaseViewController {
     
     private let addWorkoutSubject = PassthroughSubject<Void, Never>()
-    
     private let viewModel: HomeViewModelProtocol
     
     private var modelOutput: HomeViewModel.Output {
@@ -49,10 +48,8 @@ class HomeViewController: BaseViewController {
     }
     
     private func setupTabBar() {
-        tabBarItem = UITabBarItem(
-            title: TabItemType.home.title,
-            image:  TabItemType.home.icon,
-            selectedImage:  TabItemType.home.icon
+        tabBarItem = Factory.tabBar.createTabBarItem(
+            tabItemType: .home
         )
     }
 }
