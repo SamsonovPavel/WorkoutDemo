@@ -26,7 +26,15 @@ class HomeTabItemCoordinator: TabBarItemCoordinator {
         return asEmpty()
     }
     
-    private func bind(_ module: HomeModule) {}
+    private func bind(_ module: HomeModule) {
+        module.output
+            .addWorkout
+            .receive(on: .mainQueue)
+            .sink { [unowned self] count in
+                addNewWorkoutAction(count)
+                
+            }.store(in: &bindings)
+    }
 }
 
 extension HomeTabItemCoordinator {

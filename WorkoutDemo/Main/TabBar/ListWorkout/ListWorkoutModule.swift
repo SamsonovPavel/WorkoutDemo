@@ -8,7 +8,7 @@
 import Combine
 
 protocol ListWorkoutModuleInput {
-    func addWorkout()
+    func updateList()
 }
 
 class ListWorkoutModule: InputModule<ListWorkoutModuleInput> {}

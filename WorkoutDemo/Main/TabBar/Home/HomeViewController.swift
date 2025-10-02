@@ -14,10 +14,11 @@ class HomeViewController: BaseViewController {
     private let addWorkoutSubject = PassthroughSubject<Void, Never>()
     private let viewModel: HomeViewModelProtocol
     
+    private lazy var newWorkoutView = NewWorkoutView()
+    
     private var modelOutput: HomeViewModel.Output {
         let modelInput = HomeViewModel.Input(
-            addWorkoutPublisher: addWorkoutSubject
-                .eraseToAnyPublisher()
+            addWorkoutPublisher: newWorkoutView.addWorkoutPublisher
         )
 
         return viewModel.bind(modelInput)
@@ -38,6 +39,14 @@ class HomeViewController: BaseViewController {
     }
 
     private func setupViews() {
+        view.addSubview(newWorkoutView)
+        
+        newWorkoutView.snp.makeConstraints { make in
+            make.left.right.equalToSuperview().inset(20)
+            make.centerY.equalToSuperview().offset(-UIScreen.main.bounds.height / 4)
+            make.height.equalTo(220)
+        }
+        
         view.backgroundColor = .white
     }
     

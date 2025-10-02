@@ -30,8 +30,12 @@ class ListTabItemCoordinator: TabBarItemCoordinator {
 }
 
 extension ListTabItemCoordinator {
+    
+    func updateListWorkout() {
+        listWorkoutModule.input.updateList()
+    }
  
-    func showHomeTabScreen() {
+    private func showHomeTabScreen() {
         let module = listWorkoutModule
         bind(module)
         

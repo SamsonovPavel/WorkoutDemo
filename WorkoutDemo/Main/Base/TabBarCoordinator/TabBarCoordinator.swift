@@ -18,6 +18,11 @@ class TabBarCoordinator: BaseCoordinator<Void> {
         router.rootController
     }
     
+    enum Action {
+        case addWorkout(Int)
+        case logout
+    }
+    
     init(tabItemType: TabItemType, router: TabRouter) {
         self.tabItemType = tabItemType
         self.router = router
@@ -41,7 +46,21 @@ class TabBarCoordinator: BaseCoordinator<Void> {
         return asEmpty()
     }
     
-    private func bind() {}
+    private func bind() {
+        for tabItem in tabItems {
+            tabItem.value.didTabAction
+                .receive(on: .mainQueue)
+                .sink { [unowned self] action in
+                    switch action {
+                    case .addWorkout(let count):
+                        updateListWorkout(count: count)
+                        
+                    case .logout: break
+                    }
+                    
+                }.store(in: &bindings)
+        }
+    }
 }
 
 extension TabBarCoordinator {
@@ -68,5 +87,18 @@ extension TabBarCoordinator {
     
     private func switchTo(_ tab: TabItemType) {
         router.didSelectTab(tab)
+    }
+}
+
+extension TabBarCoordinator {
+    
+    private func updateListWorkout(count: Int) {
+        guard let listTabItem = tabItems[.listWorkout],
+              let coordinator = listTabItem as? ListTabItemCoordinator else {
+            return
+        }
+        
+        router.updateBadgeValue(.listWorkout, value: count)
+        coordinator.updateListWorkout()
     }
 }

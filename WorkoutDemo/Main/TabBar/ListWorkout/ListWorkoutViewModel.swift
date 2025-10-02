@@ -35,7 +35,7 @@ extension ListWorkoutViewModel {
 }
 
 extension ListWorkoutViewModel: ListWorkoutModuleInput {
-    func addWorkout() {
+    func updateList() {
         addWorkoutSubject.send()
     }
 }

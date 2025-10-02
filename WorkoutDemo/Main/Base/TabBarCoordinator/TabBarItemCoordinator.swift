@@ -6,9 +6,16 @@
 //
 
 import UIKit
+import Combine
 import Swinject
 
 class TabBarItemCoordinator: AssemblyCoordinator<Void> {
+    
+    private let didTabActionSubject = PassthroughSubject<TabBarCoordinator.Action, Never>()
+    
+    var didTabAction: AnyPublisher<TabBarCoordinator.Action, Never> {
+        didTabActionSubject.eraseToAnyPublisher()
+    }
     
     let router: Router
     
@@ -27,5 +34,12 @@ class TabBarItemCoordinator: AssemblyCoordinator<Void> {
 
     func resolve<T, Arg1>(_ type: T.Type, argument: Arg1) -> T {
         resolver.resolved(type, argument: argument)
+    }
+}
+
+extension TabBarItemCoordinator {
+ 
+    func addNewWorkoutAction(_ count: Int) {
+        didTabActionSubject.send(.addWorkout(count))
     }
 }

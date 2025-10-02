@@ -8,7 +8,7 @@
 import Combine
 
 protocol HomeModuleOutput {
-    var addWorkout: AnyPublisher<Void, Never> { get }
+    var addWorkout: AnyPublisher<Int, Never> { get }
 }
 
 class HomeModule: OutputModule<HomeModuleOutput> {}

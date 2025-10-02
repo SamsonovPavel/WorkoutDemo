@@ -11,7 +11,8 @@ import SnapKit
 
 class ListWorkoutViewController: BaseViewController {
     
-    private let addWorkoutSubject = PassthroughSubject<Void, Never>()
+    private lazy var collectionView = ListCollectionView()
+    private lazy var dataSource = ListCollectionDataSource(collectionView)
     
     private let viewModel: ListWorkoutViewModelProtocol
     
@@ -35,14 +36,22 @@ class ListWorkoutViewController: BaseViewController {
 
     private func setupViews() {
         view.backgroundColor = .white
+        
+        view.addSubview(collectionView)
+        dataSource.reloadData()
+        
+        collectionView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+                .inset(16)
+        }
     }
-    
-    private func makeConstraints() {}
 
     private func bind() {
         modelOutput.addWorkoutPublisher
             .receive(on: .mainQueue)
-            .sink { _ in
+            .sink { [unowned self] in
+                dataSource.reloadData()
+                
             }.store(in: &bindings)
     }
     

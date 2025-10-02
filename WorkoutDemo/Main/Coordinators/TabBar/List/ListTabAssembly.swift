@@ -17,7 +17,8 @@ class ListTabAssembly: Assembly {
                 input: viewModel,
                 viewController: viewController
             )
-        }
+            
+        }.inObjectScope(.container)
 
         // Регистрация других модулей
     }

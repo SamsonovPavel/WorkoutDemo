@@ -50,8 +50,11 @@ class TabBarViewController: UITabBarController {
         selectedIndex = itemType.rawValue
     }
     
-    func updateBadgeValue(_ itemType: TabItemType, value: Int?) {}
-    func updateProfileIcon() {}
+    func updateBadgeValue(_ itemType: TabItemType, value: Int) {
+        guard let items = tabBar.items else { return }
+
+        items[itemType.rawValue].badgeValue = String(value)
+    }
 }
 
 typealias TabItemType = TabBarViewController.TabItemType
