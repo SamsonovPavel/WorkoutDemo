@@ -81,6 +81,8 @@ extension CoreDataStack {
         newWorkout.duration = duration
         newWorkout.date = Date()
         
-        saveContext( )
+        DispatchQueue.main.async {
+            self.saveContext()            
+        }
     }
 }
