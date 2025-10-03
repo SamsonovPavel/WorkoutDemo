@@ -63,6 +63,7 @@ class ListCollectionDataSource: UICollectionViewDiffableDataSource<ListCollectio
     func reloadData() {
         if currentSnapshot.numberOfItems > 0 {
             currentSnapshot.deleteAllItems()
+            currentSnapshot.appendSections(SectionType.allCases)
         }
 
         Task(priority: .medium) {

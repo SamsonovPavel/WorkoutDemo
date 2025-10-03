@@ -40,7 +40,7 @@ extension RouterProtocol where RootController == TabBarViewController {
     }
     
     func updateBadgeValue(_ itemType: TabItemType, value: Int) {
-        rootController.updateBadgeValue(itemType, value: value)
+        rootController.updateBadgeValue(itemType, count: value)
     }
     
     func resetBadgeValue() {

@@ -50,17 +50,17 @@ class TabBarViewController: UITabBarController {
         selectedIndex = itemType.rawValue
     }
     
-    func updateBadgeValue(_ itemType: TabItemType, value: Int) {
+    func updateBadgeValue(_ itemType: TabItemType, count: Int) {
         guard let items = tabBar.items else { return }
         
-        let badgeString = items[itemType.rawValue].badgeValue
+        let tabItem = items[itemType.rawValue]
         
-        if let badgeString, let number = Int(badgeString) {
-            items[itemType.rawValue].badgeValue = String(number + value)
+        if let value = tabItem.badgeValue, let number = Int(value) {
+            tabItem.badgeValue = String(number + count)
             
         } else {
             
-            items[itemType.rawValue].badgeValue = String(value)
+            tabItem.badgeValue = String(count)
         }
     }
 

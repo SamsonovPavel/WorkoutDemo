@@ -14,6 +14,7 @@ class WorkoutButton: BaseButton {
         case login
         case logout
         case normal
+        case progress
         
         var title: String {
             switch self {
@@ -21,6 +22,7 @@ class WorkoutButton: BaseButton {
             case .login: return "Login"
             case .logout: return "Logout"
             case .normal: return "Start"
+            case .progress: return "Stop"
             }
         }
     }

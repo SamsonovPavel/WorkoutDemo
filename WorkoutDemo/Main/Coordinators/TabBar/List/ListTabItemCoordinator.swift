@@ -63,8 +63,8 @@ class ListTabItemCoordinator: TabBarItemCoordinator {
         module.output
             .cancelWorkout
             .receive(on: .mainQueue)
-            .sink { _ in // Логика обновления или переход на другой экран
-            }.store(in: &bindings)
+            .sink(receiveValue: router.dismiss)
+            .store(in: &bindings)
     }
 }
 

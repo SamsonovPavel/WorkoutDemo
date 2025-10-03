@@ -13,7 +13,7 @@ class ListWorkoutViewController: BaseViewController {
     
     private let resetBadgeSubject = PassthroughSubject<Void, Never>()
     
-    private lazy var collectionView = ListCollectionView()
+    private let collectionView = ListCollectionView()
     private lazy var dataSource = ListCollectionDataSource(collectionView)
     
     private let viewModel: ListWorkoutViewModelProtocol

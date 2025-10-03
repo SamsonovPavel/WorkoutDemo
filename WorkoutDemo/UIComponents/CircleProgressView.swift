@@ -11,10 +11,10 @@ import SnapKit
 
 class CircleProgressView: UIView {
     
-    private var progressButtonPublisher: AnyPublisher<Void, Never> {
-        progressButton.publisher(for: .touchUpInside)
-            .mapToVoid()
-            .eraseToAnyPublisher()
+    private let completeSubject = PassthroughSubject<Void, Never>()
+    
+    var completePublisher: AnyPublisher<Void, Never> {
+        completeSubject.eraseToAnyPublisher()
     }
     
     private lazy var shapeLayer = createCircle(
@@ -32,33 +32,31 @@ class CircleProgressView: UIView {
         fillColor: .clear
     )
     
-    private lazy var progressButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("Start", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = .boldSystemFont(ofSize: 32)
-        button.backgroundColor = .clear
+    private lazy var progressTimeLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .white
+        label.text = timeFormattedString(timeInterval)
+        label.font = .systemFont(ofSize: 40, weight: .bold)
+        label.textAlignment = .center
         
-        return button
+        return label
     }()
     
-    private var timeInterval: TimeInterval
     private var timer = Timer.publish(every: 1, on: .main, in: .common)
-    
-    private var isProgress: Bool = false {
-        didSet {
-            refreshProgressButton()
-        }
-    }
+    private var timeInterval: TimeInterval
+    private var strokeInterval: TimeInterval = 0
     
     private var bindings = Set<AnyCancellable>()
 
-    init(timeInterval: TimeInterval = 0) {
+    init(timeInterval: TimeInterval) {
+        let timeInterval = timeInterval * 60
+        
         self.timeInterval = timeInterval
         super.init(frame: .zero)
         
         setupViews()
-        bind()
+        startTimer(interval: timeInterval)
+        startAnimatePulse()
     }
     
     @available(*, unavailable)
@@ -74,46 +72,20 @@ class CircleProgressView: UIView {
         layer.addSublayer(shapeLayer)
         layer.addSublayer(trackShapeLayer)
         
+        addSubviews(progressTimeLabel)
+        
         trackShapeLayer.transform = CATransform3DMakeRotation(-.pi/2, 0, 0, 1)
         trackShapeLayer.strokeEnd = 0
-
-        addSubview(progressButton)
         
-        progressButton.snp.makeConstraints { make in
+        progressTimeLabel.snp.makeConstraints { make in
             make.center.equalToSuperview()
         }
-    }
-    
-    private func bind() {
-        progressButtonPublisher
-            .receive(on: .mainQueue)
-            .sink { [unowned self] in
-                isProgress.toggle()
-
-                if isProgress {
-                    startTimer()
-                    startAnimatePulse()
-                    
-                } else {
-                    
-                    stopTimer()
-                    stopAnimatePulse()
-                }
-                
-            }.store(in: &bindings)
     }
     
     private func refreshPosition() {
         shapeLayer.position = center
         pulseShapeLayer.position = center
         trackShapeLayer.position = center
-    }
-    
-    private func refreshProgressButton() {
-        progressButton.setTitle(
-            isProgress ? "Start" : "Stop",
-            for: .normal
-        )
     }
     
     private func createCircle(strokeColor: UIColor, fillColor: UIColor) -> CAShapeLayer {
@@ -137,9 +109,16 @@ class CircleProgressView: UIView {
         return layer
     }
     
+    private func timeFormattedString(_ timeInterval: TimeInterval) -> String {
+        let seconds = Int(timeInterval.truncatingRemainder(dividingBy: 60))
+        let minutes = Int(timeInterval.truncatingRemainder(dividingBy: 3600) / 60)
+        
+        return String(format: "%.2d:%.2d", minutes, seconds)
+    }
+    
     private func startAnimatePulse() {
         let animation = CABasicAnimation(keyPath: "transform.scale")
-        animation.toValue = 1.2
+        animation.toValue = 1.1
         animation.duration = 0.8
         animation.timingFunction = CAMediaTimingFunction(name: .easeOut)
         animation.autoreverses = true
@@ -151,24 +130,38 @@ class CircleProgressView: UIView {
     private func stopAnimatePulse() {
         pulseShapeLayer.removeAnimation(forKey: "pulsing")
     }
-    
-    func startTimer() {
+
+    func startTimer(interval: TimeInterval) {
         timer
             .autoconnect()
             .receive(on: .mainQueue)
             .sink { [unowned self] time in
-                timeInterval += 1/60
+                timeInterval -= 1
+                strokeInterval += 1/interval
                 
-                if timeInterval >= 1 {
+                if timeInterval < 1 {
                     trackShapeLayer.strokeEnd = 0
+                    progressTimeLabel.text = "0"
+                    
                     timeInterval = 0
+                    strokeInterval = 0
+                    
+                    stopTimer()
+                    stopAnimatePulse()
+                    
+                    completeSubject.send()
                     
                 } else {
                     
-                    trackShapeLayer.strokeEnd = timeInterval
+                    progressTimeLabel.text = timeFormattedString(timeInterval)
+                    trackShapeLayer.strokeEnd = strokeInterval
                 }
                 
             }.store(in: &bindings)
+    }
+    
+    func startTimer() {
+        startTimer(interval: timeInterval)
     }
     
     func stopTimer() {
@@ -177,7 +170,7 @@ class CircleProgressView: UIView {
             .cancel()
         
         timer = Timer.publish(every: 1, on: .main, in: .common)
-        timeInterval = trackShapeLayer.strokeEnd
+//        timeInterval = trackShapeLayer.strokeEnd
     }
 }
 
@@ -187,8 +180,7 @@ class CircleProgressView: UIView {
 extension CircleProgressView {
     
     convenience init() {
-        self.init(timeInterval: 0)
-//        startTimer()
+        self.init(timeInterval: 60)
     }
 }
 

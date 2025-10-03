@@ -11,11 +11,29 @@ import SnapKit
 
 class ProgressViewController: BaseViewController {
     
+    private var progressButtonPublisher: AnyPublisher<Void, Never> {
+        progressButton.publisher(for: .touchUpInside)
+            .mapToVoid()
+            .eraseToAnyPublisher()
+    }
+    
     // Вызывается по событию завершения тренировки
     private let cancelWorkoutSubject = PassthroughSubject<Void, Never>()
     private let viewModel: ProgressViewModelProtocol
     
-    private let circleProgressView = CircleProgressView()
+    private lazy var circleProgressView = CircleProgressView(
+        timeInterval: TimeInterval(
+            viewModel.currentModel.duration
+        ) ?? 0,
+    )
+    
+    private let progressButton = WorkoutButton(style: .progress)
+    
+    private var isProgress: Bool = false {
+        didSet {
+            refreshProgressButton()
+        }
+    }
     
     init(_ model: ProgressViewModelProtocol) {
         viewModel = model
@@ -34,10 +52,19 @@ class ProgressViewController: BaseViewController {
     }
     
     private func setupViews() {
-        view.addSubview(circleProgressView)
+        view.addSubviews(
+            circleProgressView,
+            progressButton
+        )
         
         circleProgressView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
+        }
+        
+        progressButton.snp.makeConstraints { make in
+            make.left.right.equalToSuperview().inset(20)
+            make.bottom.equalToSuperview().inset(44)
+            make.height.equalTo(48)
         }
         
         view.backgroundColor = .white
@@ -50,6 +77,29 @@ class ProgressViewController: BaseViewController {
                     .eraseToAnyPublisher()
             )
         )
+        
+        progressButtonPublisher
+            .receive(on: .mainQueue)
+            .sink { [unowned self] in
+                isProgress.toggle()
+                
+            }.store(in: &bindings)
+        
+        circleProgressView.completePublisher
+            .receive(on: .mainQueue)
+            .sink(receiveValue: cancelWorkoutSubject.send)
+            .store(in: &bindings)
+    }
+    
+    private func refreshProgressButton() {
+        progressButton.setTitle(
+            isProgress ? "Start" : "Stop",
+            for: .normal
+        )
+        
+        isProgress
+        ? circleProgressView.stopTimer()
+        : circleProgressView.startTimer()
     }
 }
 
@@ -64,7 +114,7 @@ extension ProgressViewController {
                 model: ProgressViewModel.Model(
                     title: "Тренировка в зале",
                     date: Date(),
-                    duration: "10 мин"
+                    duration: "60"
                 )
             )
         )
