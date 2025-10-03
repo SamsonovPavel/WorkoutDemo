@@ -17,7 +17,7 @@ class ListCollectionCell: UICollectionViewCell {
         let label = UILabel()
         label.textColor = .black
         label.textAlignment = .left
-        label.font = .systemFont(ofSize: 20, weight: .medium)
+        label.font = .systemFont(ofSize: 20, weight: .bold)
         
         return label
     }()
@@ -39,6 +39,8 @@ class ListCollectionCell: UICollectionViewCell {
         
         return label
     }()
+    
+    private let separatorView = UIView()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -49,12 +51,14 @@ class ListCollectionCell: UICollectionViewCell {
     required init?(coder: NSCoder) { nil }
     
     private func setupViews() {
-        contentView.addSubview(cellImageView)
-        contentView.addSubview(accessoryImageView)
-        
-        contentView.addSubview(titleLabel)
-        contentView.addSubview(dateLabel)
-        contentView.addSubview(durationLabel)
+        contentView.addSubviews(
+            cellImageView,
+            accessoryImageView,
+            titleLabel,
+            dateLabel,
+            durationLabel,
+            separatorView
+        )
         
         cellImageView.image = UIImage(systemName: "figure.run")
         cellImageView.contentMode = .scaleAspectFit
@@ -62,9 +66,12 @@ class ListCollectionCell: UICollectionViewCell {
         accessoryImageView.image = UIImage(systemName: "chevron.right")
         accessoryImageView.contentMode = .scaleAspectFit
         
+        separatorView.backgroundColor = .systemBlue.withAlphaComponent(0.2)
+        
         cellImageView.snp.makeConstraints { make in
-            make.left.top.bottom.equalToSuperview()
-            make.size.equalTo(44)
+            make.left.equalToSuperview()
+            make.centerY.equalToSuperview().offset(-4)
+            make.size.equalTo(48)
         }
         
         titleLabel.snp.makeConstraints { make in
@@ -74,11 +81,12 @@ class ListCollectionCell: UICollectionViewCell {
         
         dateLabel.snp.makeConstraints { make in
             make.left.equalTo(titleLabel)
-            make.bottom.equalToSuperview()
+            make.top.equalTo(titleLabel.snp.bottom).offset(4)
         }
         
         durationLabel.snp.makeConstraints { make in
-            make.right.bottom.equalToSuperview()
+            make.right.equalToSuperview()
+            make.bottom.equalTo(dateLabel)
             make.left.equalTo(dateLabel.snp.right).offset(8)
         }
         
@@ -87,17 +95,23 @@ class ListCollectionCell: UICollectionViewCell {
             make.centerY.equalTo(cellImageView)
         }
         
+        separatorView.snp.makeConstraints { make in
+            make.left.right.equalToSuperview().inset(20)
+            make.bottom.equalToSuperview()
+            make.height.equalTo(1)
+        }
+        
         dateLabel.snp.contentHuggingHorizontalPriority = UILayoutPriority.defaultHigh.rawValue
     }
     
     func configure(_ model: Model) {
-        let fullDate = DateFormatter.fullDate.string(
+        let fullDate = DateFormatter.shortDate.string(
             from: model.date
         )
 
         titleLabel.text = model.title
-        durationLabel.text = model.duration
-        dateLabel.text = fullDate
+        durationLabel.text = "Длительность \(model.duration) мин."
+        dateLabel.text = "\(fullDate),"
     }
 }
 
@@ -127,7 +141,7 @@ extension ListCollectionCell.Model {
     static let model = ListCollectionCell.Model(
         title: "Тренировка в зале",
         date: Date(),
-        duration: "60 мин"
+        duration: "60"
     )
 }
 
@@ -135,7 +149,7 @@ struct ListCollectionCell_Previews: PreviewProvider {
     static var previews: some View {
         ListCollectionCell(.model)
             .preview()
-            .frame(height: 52)
+            .frame(height: 58)
             .padding()
     }
 }

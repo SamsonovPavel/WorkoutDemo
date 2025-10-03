@@ -61,18 +61,20 @@ class DetailViewController: BaseViewController {
     }
 
     private func setupViews() {
-        view.addSubview(titleLabel)
-        view.addSubview(dateLabel)
-        view.addSubview(durationLabel)
-        view.addSubview(workoutButton)
+        view.addSubviews(
+            titleLabel,
+            dateLabel,
+            durationLabel,
+            workoutButton
+        )
         
         let fullDate = DateFormatter.fullDate.string(
             from: viewModel.currentModel.date
         )
         
-        titleLabel.text = viewModel.currentModel.title
-        durationLabel.text = viewModel.currentModel.duration
-        dateLabel.text = fullDate
+        titleLabel.text = "Тема: \(viewModel.currentModel.title)"
+        durationLabel.text = "Длительность: \(viewModel.currentModel.duration) мин."
+        dateLabel.text = "Дата: \(fullDate) г."
         
         view.backgroundColor = .white
     }
@@ -121,7 +123,7 @@ extension DetailViewController {
                 model: DetailViewModel.Model(
                     title: "Тренировка в зале",
                     date: Date(),
-                    duration: "10 мин"
+                    duration: "10"
                 )
             )
         )

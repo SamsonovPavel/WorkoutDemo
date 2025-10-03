@@ -9,11 +9,21 @@ import Foundation
 
 extension DateFormatter {
 
-    static let fullDate: DateFormatter = {
+    static let shortDate: DateFormatter = {
         let formatter = DateFormatter()
         
         formatter.dateFormat = "dd.MM.yyyy"
         formatter.locale = .current
+        formatter.timeZone = .current
+        
+        return formatter
+    }()
+    
+    static let fullDate: DateFormatter = {
+        let formatter = DateFormatter()
+        
+        formatter.dateFormat = "dd MMMM yyyy"
+        formatter.locale = Locale(identifier: "ru_RU")
         formatter.timeZone = .current
         
         return formatter

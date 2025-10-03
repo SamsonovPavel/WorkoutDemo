@@ -27,14 +27,14 @@ class ListCollectionViewLayout: UICollectionViewCompositionalLayout {
     private static func workoutLayoutSection() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),
-            heightDimension: .absolute(52)
+            heightDimension: .absolute(58)
         )
         
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),
-            heightDimension: .absolute(52)
+            heightDimension: .absolute(58)
         )
         
         let group = NSCollectionLayoutGroup.horizontal(
@@ -55,7 +55,7 @@ class ListCollectionViewLayout: UICollectionViewCompositionalLayout {
 
         let section = NSCollectionLayoutSection(group: group)
         section.boundarySupplementaryItems = [sectionHeader]
-        section.interGroupSpacing = 20
+        section.interGroupSpacing = 8
         section.contentInsets.top = 24
         section.contentInsets.bottom = 24
         
