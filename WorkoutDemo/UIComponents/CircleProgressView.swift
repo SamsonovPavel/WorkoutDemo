@@ -34,7 +34,7 @@ class CircleProgressView: UIView {
     
     private lazy var progressButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Stop", for: .normal)
+        button.setTitle("Start", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = .boldSystemFont(ofSize: 32)
         button.backgroundColor = .clear
@@ -158,7 +158,15 @@ class CircleProgressView: UIView {
             .receive(on: .mainQueue)
             .sink { [unowned self] time in
                 timeInterval += 1/60
-                trackShapeLayer.strokeEnd = timeInterval
+                
+                if timeInterval >= 1 {
+                    trackShapeLayer.strokeEnd = 0
+                    timeInterval = 0
+                    
+                } else {
+                    
+                    trackShapeLayer.strokeEnd = timeInterval
+                }
                 
             }.store(in: &bindings)
     }

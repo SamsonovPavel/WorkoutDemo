@@ -16,6 +16,8 @@ class ListTabItemCoordinator: TabBarItemCoordinator {
     }
     
     // Другие модули экранов
+    
+    private let transitionDelegate = BottomSheetTransitionDelegate()
  
     override func assemblies() -> [Assembly] {
         ListTabAssembly.assemblies
@@ -44,7 +46,16 @@ class ListTabItemCoordinator: TabBarItemCoordinator {
             .startWorkout
             .receive(on: .mainQueue)
             .sink { [unowned self] model in
-                print(model)
+                showProgressScreen(model)
+                
+            }.store(in: &bindings)
+    }
+    
+    private func bind(_ module: ProgressModule) {
+        module.output
+            .cancelWorkout
+            .receive(on: .mainQueue)
+            .sink { _ in // Логика обновления или переход на другой экран
             }.store(in: &bindings)
     }
 }
@@ -73,5 +84,23 @@ extension ListTabItemCoordinator {
         bind(module)
         
         router.pushTo(module.viewController)
+    }
+    
+    private func showProgressScreen(_ model: DetailViewModel.Model) {
+        let model = ProgressViewModel.Model(
+            title: model.title,
+            date: model.date,
+            duration: model.duration
+        )
+        
+        let module = resolve(ProgressModule.self, argument: model)
+        let viewController = module.viewController
+        
+        viewController.modalPresentationStyle = .custom
+        viewController.transitioningDelegate = transitionDelegate
+        
+        bind(module)
+        
+        router.present(viewController)
     }
 }

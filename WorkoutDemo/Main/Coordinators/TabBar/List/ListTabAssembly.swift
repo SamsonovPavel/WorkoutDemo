@@ -30,6 +30,16 @@ class ListTabAssembly: Assembly {
                 viewController: viewController
             )
         }
+        
+        container.register(ProgressModule.self) { (resolver, model: ProgressViewModel.Model) in
+            let viewModel = ProgressViewModel(model: model)
+            let viewController = ProgressViewController(viewModel)
+            
+            return ProgressModule(
+                output: viewModel,
+                viewController: viewController
+            )
+        }
     }
 }
 
