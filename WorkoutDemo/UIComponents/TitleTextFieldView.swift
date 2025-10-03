@@ -12,7 +12,7 @@ class TitleTextFieldView: UIView {
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = title
+        label.text = style.title
         label.font = .systemFont(ofSize: 18, weight: .medium)
         return label
     }()
@@ -20,22 +20,46 @@ class TitleTextFieldView: UIView {
     private lazy var titleTextField: UITextField = {
         let textField = UITextField()
         textField.borderStyle = .roundedRect
-        textField.keyboardType = .emailAddress
+        textField.keyboardType = keyboardType
+        textField.autocorrectionType = .no
         
         return textField
     }()
     
-    private let title: String
+    private let style: StyleType
+    private let keyboardType: UIKeyboardType
     
     var textString: String? {
         titleTextField.text
     }
     
-    init(title: String) {
-        self.title = title
+    enum StyleType {
+        case name
+        case nameWorkout
+        case duration
+        
+        var title: String {
+            switch self {
+            case .name: "Введите Ваше имя"
+            case .nameWorkout: "Название тренировки"
+            case .duration: "Длительность (мин)"
+            }
+        }
+    }
+    
+    init(style: StyleType, keyboardType: UIKeyboardType) {
+        self.style = style
+        self.keyboardType = keyboardType
         super.init(frame: .zero)
         
         setupViews()
+    }
+    
+    convenience init(style: StyleType) {
+        self.init(
+            style: style,
+            keyboardType: .emailAddress
+        )
     }
     
     @available(*, unavailable)
@@ -53,6 +77,7 @@ class TitleTextFieldView: UIView {
             make.left.right.bottom.equalToSuperview()
         }
         
+        titleTextField.layer.cornerRadius = 8
         titleTextField.layer.borderColor = UIColor.systemBlue.withAlphaComponent(0.5).cgColor
         titleTextField.layer.borderWidth = 1
     }
@@ -68,7 +93,7 @@ class TitleTextFieldView: UIView {
 extension TitleTextFieldView {
     
     convenience init() {
-        self.init(title: "Название тренировки")
+        self.init(style: .nameWorkout)
     }
 }
 

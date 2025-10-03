@@ -18,10 +18,7 @@ class LoginViewController: BaseViewController {
     }
 
     private let viewModel: LoginViewModelProtocol
-    
-    private lazy var titleTextFieldView = TitleTextFieldView(
-        title: "Введите Ваше имя"
-    )
+    private lazy var titleTextFieldView = TitleTextFieldView(style: .name)
     
     private let workoutButton = WorkoutButton(
         style: .login

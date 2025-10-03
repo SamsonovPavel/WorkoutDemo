@@ -22,7 +22,8 @@ class HomeViewModel: HomeViewModelProtocol {
         input.addWorkoutPublisher
             .receive(on: .mainQueue)
             .sink { [unowned self] model in
-                guard model.title.isEmpty == false,
+                guard let model = model,
+                      model.title.isEmpty == false,
                       model.duration.isEmpty == false else {
                     return
                 }
@@ -64,7 +65,7 @@ class HomeViewModel: HomeViewModelProtocol {
 extension HomeViewModel {
     
     struct Input {
-        let addWorkoutPublisher: AnyPublisher<NewWorkoutView.Model, Never>
+        let addWorkoutPublisher: AnyPublisher<NewWorkoutView.Model?, Never>
     }
     
     struct Output {}

@@ -11,18 +11,13 @@ import SnapKit
 
 class NewWorkoutView: UIView {
     
-    private var addWorkoutButtonPublisher: AnyPublisher<Model, Never> {
+    private var addWorkoutButtonPublisher: AnyPublisher<Model?, Never> {
         addWorkoutButton.publisher(for: .touchUpInside)
-            .map { _ in
-                Model(
-                    title: self.titleTextFieldView.textString ?? "",
-                    duration: self.durationTextFieldView.textString ?? ""
-                )
-            }
+            .compactMap(reduce)
             .eraseToAnyPublisher()
     }
     
-    var addWorkoutPublisher: AnyPublisher<Model, Never> {
+    var addWorkoutPublisher: AnyPublisher<Model?, Never> {
         addWorkoutButtonPublisher.eraseToAnyPublisher()
     }
     
@@ -41,8 +36,14 @@ class NewWorkoutView: UIView {
         return stackView
     }()
     
-    private lazy var titleTextFieldView = TitleTextFieldView(title: "Название тренировки")
-    private lazy var durationTextFieldView = TitleTextFieldView(title: "Длительность (мин)")
+    private lazy var titleTextFieldView = TitleTextFieldView(
+        style: .nameWorkout
+    )
+    
+    private lazy var durationTextFieldView = TitleTextFieldView(
+        style: .duration,
+        keyboardType: .numberPad
+    )
     
     private lazy var addWorkoutButton = WorkoutButton(style: .add)
     private var bindings = Set<AnyCancellable>()
@@ -90,6 +91,23 @@ class NewWorkoutView: UIView {
                 endEditing(true)
                 
             }.store(in: &bindings)
+    }
+    
+    private func reduce(transform: UIControl) -> Model? {
+        guard let title = self.titleTextFieldView.textString,
+              let textString = self.durationTextFieldView.textString,
+              let duration = Int(textString) else {
+            return nil
+        }
+        
+        if duration < 100 {
+            return Model(
+                title: title,
+                duration: textString
+            )
+        }
+        
+        return nil
     }
 }
 

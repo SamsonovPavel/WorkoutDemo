@@ -11,6 +11,12 @@ import SnapKit
 
 class HomeViewController: BaseViewController {
     
+    private var tapGesturePublisher: AnyPublisher<Void, Never> {
+        view.tapGesturePublisher
+            .mapToVoid()
+            .eraseToAnyPublisher()
+    }
+    
     private let addWorkoutSubject = PassthroughSubject<Void, Never>()
     private let viewModel: HomeViewModelProtocol
     
@@ -71,12 +77,21 @@ class HomeViewController: BaseViewController {
 
     private func bind() {
         _ = modelOutput
+        
+        tapGesturePublisher
+            .receive(on: .mainQueue)
+            .sink(receiveValue: endEditing)
+            .store(in: &bindings)
     }
     
     private func setupTabBar() {
         tabBarItem = Factory.tabBar.createTabBarItem(
             tabItemType: .home
         )
+    }
+    
+    private func endEditing() {
+        view.endEditing(true)
     }
 }
 
