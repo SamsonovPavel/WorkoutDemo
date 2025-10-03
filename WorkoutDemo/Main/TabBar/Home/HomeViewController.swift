@@ -14,7 +14,15 @@ class HomeViewController: BaseViewController {
     private let addWorkoutSubject = PassthroughSubject<Void, Never>()
     private let viewModel: HomeViewModelProtocol
     
-    private lazy var newWorkoutView = NewWorkoutView()
+    private let newWorkoutView = NewWorkoutView()
+    
+    private lazy var userNameLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .black
+        label.font = .systemFont(ofSize: 20, weight: .bold)
+        
+        return label
+    }()
     
     private var modelOutput: HomeViewModel.Output {
         let modelInput = HomeViewModel.Input(
@@ -39,7 +47,10 @@ class HomeViewController: BaseViewController {
     }
 
     private func setupViews() {
-        view.addSubview(newWorkoutView)
+        view.addSubviews(
+            newWorkoutView,
+            userNameLabel
+        )
         
         newWorkoutView.snp.makeConstraints { make in
             make.left.right.equalToSuperview().inset(20)
@@ -47,6 +58,12 @@ class HomeViewController: BaseViewController {
             make.height.equalTo(220)
         }
         
+        userNameLabel.snp.makeConstraints { make in
+            make.left.right.equalToSuperview().inset(20)
+            make.top.equalToSuperview().inset(80)
+        }
+        
+        userNameLabel.text = UserDefaults.loginName
         view.backgroundColor = .white
     }
     

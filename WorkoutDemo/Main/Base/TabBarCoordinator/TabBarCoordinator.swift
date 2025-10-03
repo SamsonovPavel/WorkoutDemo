@@ -10,6 +10,8 @@ import Combine
 
 class TabBarCoordinator: BaseCoordinator<Void> {
     
+    private let complete = PassthroughSubject<Void, Never>()
+    
     private let router: TabRouter
     private let tabItemType: TabItemType
     private var tabItems: [TabItemType: TabBarItemCoordinator]
@@ -20,6 +22,7 @@ class TabBarCoordinator: BaseCoordinator<Void> {
     
     enum Action {
         case addWorkout(Int)
+        case resetBadge
         case logout
     }
     
@@ -43,7 +46,7 @@ class TabBarCoordinator: BaseCoordinator<Void> {
         switchTo(tabItemType)
         bind()
         
-        return asEmpty()
+        return complete.eraseToAnyPublisher()
     }
     
     private func bind() {
@@ -55,7 +58,8 @@ class TabBarCoordinator: BaseCoordinator<Void> {
                     case .addWorkout(let count):
                         updateListWorkout(count: count)
                         
-                    case .logout: break
+                    case .resetBadge: resetBatch()
+                    case .logout: logout()
                     }
                     
                 }.store(in: &bindings)
@@ -100,5 +104,13 @@ extension TabBarCoordinator {
         
         router.updateBadgeValue(.listWorkout, value: count)
         coordinator.updateListWorkout()
+    }
+    
+    private func resetBatch() {
+        router.resetBadgeValue()
+    }
+    
+    private func logout() {
+        complete.send()
     }
 }

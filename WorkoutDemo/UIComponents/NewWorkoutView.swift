@@ -84,6 +84,9 @@ class NewWorkoutView: UIView {
         addWorkoutPublisher
             .receive(on: .mainQueue)
             .sink { [unowned self] _ in
+                titleTextFieldView.reset()
+                durationTextFieldView.reset()
+                
                 endEditing(true)
                 
             }.store(in: &bindings)

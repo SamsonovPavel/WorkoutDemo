@@ -11,9 +11,15 @@ import SnapKit
 
 class AboutAppViewController: BaseViewController {
     
-    private let didSelectRowSubject = PassthroughSubject<Void, Never>()
-    private let didExitSubject = PassthroughSubject<Void, Never>()
+    private var logoutButtonPublisher: AnyPublisher<Void, Never> {
+        logoutButton.publisher(for: .touchUpInside)
+            .mapToVoid()
+            .eraseToAnyPublisher()
+    }
     
+    private let didSelectRowSubject = PassthroughSubject<Void, Never>()
+    
+    private let logoutButton = WorkoutButton(style: .logout)
     private let viewModel: AboutAppViewModelProtocol
     
     init(_ model: AboutAppViewModelProtocol) {
@@ -31,6 +37,14 @@ class AboutAppViewController: BaseViewController {
     }
 
     private func setupViews() {
+        view.addSubview(logoutButton)
+        
+        logoutButton.snp.makeConstraints { make in
+            make.left.right.equalToSuperview().inset(20)
+            make.top.equalToSuperview().inset(100)
+            make.height.equalTo(48)
+        }
+        
         view.backgroundColor = .white
     }
     
@@ -40,7 +54,7 @@ class AboutAppViewController: BaseViewController {
         viewModel.bind(
             AboutAppViewModel.Input(
                 didSelectRow: didSelectRowSubject.eraseToAnyPublisher(),
-                didExit: didExitSubject.eraseToAnyPublisher()
+                logout: logoutButtonPublisher
             )
         )
     }

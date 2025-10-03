@@ -11,11 +11,15 @@ class WorkoutButton: BaseButton {
     
     enum StyleType {
         case add
+        case login
+        case logout
         case normal
         
         var title: String {
             switch self {
             case .add: return "Add workout"
+            case .login: return "Login"
+            case .logout: return "Logout"
             case .normal: return "Start"
             }
         }

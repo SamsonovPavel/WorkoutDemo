@@ -9,6 +9,7 @@ import Combine
 
 protocol ListWorkoutModuleOutput {
     var didSelectRow: AnyPublisher<ListCollectionDataSource.RowType, Never> { get }
+    var resetBadge: AnyPublisher<Void, Never> { get }
 }
 
 protocol ListWorkoutModuleInput {

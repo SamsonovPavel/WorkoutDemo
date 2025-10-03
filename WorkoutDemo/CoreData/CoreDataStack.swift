@@ -69,6 +69,10 @@ extension CoreDataStack {
     }
     
     func addNewWorkout(title: String, duration: String) {
+        guard title.isEmpty == false, duration.isEmpty == false else {
+            return
+        }
+        
         let context = persistentContainer.viewContext
         let newWorkout = Workout(context: context)
         

@@ -52,8 +52,21 @@ class TabBarViewController: UITabBarController {
     
     func updateBadgeValue(_ itemType: TabItemType, value: Int) {
         guard let items = tabBar.items else { return }
+        
+        let badgeString = items[itemType.rawValue].badgeValue
+        
+        if let badgeString, let number = Int(badgeString) {
+            items[itemType.rawValue].badgeValue = String(number + value)
+            
+        } else {
+            
+            items[itemType.rawValue].badgeValue = String(value)
+        }
+    }
 
-        items[itemType.rawValue].badgeValue = String(value)
+    func resetBadgeValue() {
+        guard let items = tabBar.items else { return }
+        items[TabItemType.listWorkout.rawValue].badgeValue = nil
     }
 }
 

@@ -37,9 +37,19 @@ class TabBarItemCoordinator: AssemblyCoordinator<Void> {
     }
 }
 
+// MARK: - Action
+
 extension TabBarItemCoordinator {
  
     func addNewWorkoutAction(_ count: Int) {
         didTabActionSubject.send(.addWorkout(count))
+    }
+    
+    func resetBadgeAction() {
+        didTabActionSubject.send(.resetBadge)
+    }
+    
+    func logoutAction() {
+        didTabActionSubject.send(.logout)
     }
 }

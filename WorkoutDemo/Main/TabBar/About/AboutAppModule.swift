@@ -9,7 +9,7 @@ import Combine
 
 protocol AboutAppModuleOutput {
     var didSelectRow: AnyPublisher<Void, Never> { get }
-    var didExit: AnyPublisher<Void, Never> { get }
+    var logoutPublisher: AnyPublisher<Void, Never> { get }
 }
 
 class AboutAppModule: OutputModule<AboutAppModuleOutput> {}

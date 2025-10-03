@@ -39,6 +39,14 @@ class ListTabItemCoordinator: TabBarItemCoordinator {
                 }
                 
             }.store(in: &bindings)
+        
+        module.output
+            .resetBadge
+            .receive(on: .mainQueue)
+            .sink { [unowned self] in
+                resetBadgeAction()
+                
+            }.store(in: &bindings)
     }
     
     private func bind(_ module: DetailModule) {

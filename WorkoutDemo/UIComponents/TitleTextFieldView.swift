@@ -56,6 +56,10 @@ class TitleTextFieldView: UIView {
         titleTextField.layer.borderColor = UIColor.systemBlue.withAlphaComponent(0.5).cgColor
         titleTextField.layer.borderWidth = 1
     }
+    
+    func reset() {
+        titleTextField.text = nil
+    }
 }
 
 // MARK: - Preview

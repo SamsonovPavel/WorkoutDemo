@@ -22,14 +22,20 @@ class HomeViewModel: HomeViewModelProtocol {
         input.addWorkoutPublisher
             .receive(on: .mainQueue)
             .sink { [unowned self] model in
+                guard model.title.isEmpty == false,
+                      model.duration.isEmpty == false else {
+                    return
+                }
+                
                 Task(priority: .medium) {
                     do {
-                        let result = try addWorkout(
+                        try addWorkout(
                             title: model.title,
                             duration: model.duration
                         )
                         
-                        addWorkoutSubject.send(result.count)
+                        // Отправляем для badge количество новых тренировок
+                        addWorkoutSubject.send(1)
                         
                     } catch {
                  
@@ -44,16 +50,14 @@ class HomeViewModel: HomeViewModelProtocol {
         return .init()
     }
     
-    // Добавляем в CoreData тренировку и отправляем для badge количество всех тренировок
-    private func addWorkout(title: String, duration: String) throws -> [Workout] {
+    // Добавляем в CoreData тренировку
+    private func addWorkout(title: String, duration: String) throws {
         let shared = CoreDataStack.shared
         
         shared.addNewWorkout(
             title: title,
             duration: duration
         )
-        
-        return try shared.fetchAllWorkouts()
     }
 }
 

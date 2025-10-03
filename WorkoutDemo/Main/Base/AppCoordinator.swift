@@ -26,8 +26,13 @@ class AppCoordinator: BaseCoordinator<Void> {
     private var tabRouter: TabRouter {
         route.createTabRouter()
     }
+    
+    private var isUserLogged: Bool {
+        UserDefaults.loginName.isEmpty == false
+    }
 
     enum StateType {
+        case login
         case splash
         case onboarding
         case tabBar(TabItemType)
@@ -43,6 +48,7 @@ class AppCoordinator: BaseCoordinator<Void> {
         $stateType
             .sink { [unowned self] state in
                 switch state {
+                case .login: startLoginCoordinator()
                 case .splash: startSplashCoordinator()
                 case .onboarding: startOnboardingCoordinator()
                 case .tabBar(let tab): startTabCoordinator(tab)
@@ -67,6 +73,15 @@ class AppCoordinator: BaseCoordinator<Void> {
         
         routeTo(coordinator, window: window)
             .receive(on: .mainQueue)
+            .sink(receiveValue: routeToState)
+            .store(in: &bindings)
+    }
+    
+    private func startLoginCoordinator() {
+        let coordinator = LoginCoordinator(router: router)
+        
+        routeTo(coordinator, window: window)
+            .receive(on: .mainQueue)
             .sink(receiveValue: startTabMain)
             .store(in: &bindings)
     }
@@ -79,7 +94,7 @@ class AppCoordinator: BaseCoordinator<Void> {
         
         routeTo(coordinator, window: window)
             .receive(on: .mainQueue)
-            .sink { _ in }
+            .sink(receiveValue: routeToState)
             .store(in: &bindings)
     }
     
@@ -91,6 +106,14 @@ class AppCoordinator: BaseCoordinator<Void> {
 
     private func startTabMain() {
         stateType = .tabBar(.home)
+    }
+    
+    private func routeToState() {
+        if isUserLogged {
+            startTabMain()
+        } else {
+            stateType = .login
+        }
     }
 }
 

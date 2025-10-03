@@ -19,6 +19,7 @@ class ListWorkoutViewModel: ListWorkoutViewModelProtocol {
     
     private let addWorkoutSubject = PassthroughSubject<Void, Never>()
     private let didSelectRowSubject = PassthroughSubject<RowType, Never>()
+    private let resetBadgeSubject = PassthroughSubject<Void, Never>()
     
     private var bindings = Set<AnyCancellable>()
     
@@ -26,6 +27,11 @@ class ListWorkoutViewModel: ListWorkoutViewModelProtocol {
         input.didSelectRow
             .receive(on: .mainQueue)
             .sink(receiveValue: didSelectRowSubject.send)
+            .store(in: &bindings)
+        
+        input.resetBadge
+            .receive(on: .mainQueue)
+            .sink(receiveValue: resetBadgeSubject.send)
             .store(in: &bindings)
         
         return .init(addWorkoutPublisher: addWorkoutSubject
@@ -38,6 +44,7 @@ extension ListWorkoutViewModel {
     
     struct Input {
         let didSelectRow:AnyPublisher<RowType, Never>
+        let resetBadge: AnyPublisher<Void, Never>
     }
     
     struct Output {
@@ -52,7 +59,12 @@ extension ListWorkoutViewModel: ListWorkoutModuleInput {
 }
 
 extension ListWorkoutViewModel: ListWorkoutModuleOutput {
+    
     var didSelectRow: AnyPublisher<RowType, Never> {
         didSelectRowSubject.eraseToAnyPublisher()
+    }
+    
+    var resetBadge: AnyPublisher<Void, Never> {
+        resetBadgeSubject.eraseToAnyPublisher()
     }
 }

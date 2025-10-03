@@ -11,6 +11,8 @@ import SnapKit
 
 class ListWorkoutViewController: BaseViewController {
     
+    private let resetBadgeSubject = PassthroughSubject<Void, Never>()
+    
     private lazy var collectionView = ListCollectionView()
     private lazy var dataSource = ListCollectionDataSource(collectionView)
     
@@ -19,7 +21,8 @@ class ListWorkoutViewController: BaseViewController {
     private var modelOutput: ListWorkoutViewModel.Output {
         viewModel.bind(
             ListWorkoutViewModel.Input(
-                didSelectRow: collectionView.didSelectRow.eraseToAnyPublisher()
+                didSelectRow: collectionView.didSelectRow.eraseToAnyPublisher(),
+                resetBadge: resetBadgeSubject.eraseToAnyPublisher()
             )
         )
     }
@@ -36,6 +39,11 @@ class ListWorkoutViewController: BaseViewController {
         
         setupViews()
         bind()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        resetBadgeSubject.send()
     }
 
     private func setupViews() {

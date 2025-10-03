@@ -6,6 +6,7 @@
 //
 
 import Combine
+import Foundation
 
 protocol AboutAppViewModelProtocol {
     func bind(_ input: AboutAppViewModel.Input)
@@ -15,8 +16,9 @@ protocol AboutAppViewModelProtocol {
 
 class AboutAppViewModel: AboutAppViewModelProtocol {
     
+    // Для строк коллекции
     private let didSelectRowSubject = PassthroughSubject<Void, Never>()
-    private let didExitRowSubject = PassthroughSubject<Void, Never>()
+    private let logoutSubject = PassthroughSubject<Void, Never>()
     
     private var bindings = Set<AnyCancellable>()
     
@@ -26,10 +28,14 @@ class AboutAppViewModel: AboutAppViewModelProtocol {
             .sink(receiveValue: didSelectRowSubject.send)
             .store(in: &bindings)
         
-        input.didExit
-            .receive(on: .mainQueue)
-            .sink(receiveValue: didExitRowSubject.send)
+        input.logout
+            .sink(receiveValue: logout)
             .store(in: &bindings)
+    }
+    
+    private func logout() {
+        UserDefaults.loginName = ""
+        logoutSubject.send(())
     }
 }
 
@@ -37,7 +43,7 @@ extension AboutAppViewModel {
     
     struct Input {
         let didSelectRow: AnyPublisher<Void, Never>
-        let didExit: AnyPublisher<Void, Never>
+        let logout: AnyPublisher<Void, Never>
     }
     
     struct Output {}
@@ -49,7 +55,7 @@ extension AboutAppViewModel: AboutAppModuleOutput {
         didSelectRowSubject.eraseToAnyPublisher()
     }
     
-    var didExit: AnyPublisher<Void, Never> {
-        didExitRowSubject.eraseToAnyPublisher()
+    var logoutPublisher: AnyPublisher<Void, Never> {
+        logoutSubject.eraseToAnyPublisher()
     }
 }

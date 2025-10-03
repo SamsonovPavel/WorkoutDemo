@@ -36,6 +36,12 @@ class AboutAppTabItemCoordinator: TabBarItemCoordinator {
             .receive(on: .mainQueue)
             .sink { _ in
             }.store(in: &bindings)
+        
+        module.output
+            .logoutPublisher
+            .receive(on: .mainQueue)
+            .sink(receiveValue: logoutAction)
+            .store(in: &bindings)
     }
 }
 

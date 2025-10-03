@@ -61,7 +61,6 @@ class OnboardingViewController: BaseViewController {
     
     private func run() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            self.removeAnimation()
             self.runLoadSubject.send(())
         }
     }
