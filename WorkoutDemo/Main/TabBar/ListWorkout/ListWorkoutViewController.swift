@@ -17,7 +17,11 @@ class ListWorkoutViewController: BaseViewController {
     private let viewModel: ListWorkoutViewModelProtocol
     
     private var modelOutput: ListWorkoutViewModel.Output {
-        viewModel.bind()
+        viewModel.bind(
+            ListWorkoutViewModel.Input(
+                didSelectRow: collectionView.didSelectRow.eraseToAnyPublisher()
+            )
+        )
     }
 
     init(_ model: ListWorkoutViewModelProtocol) {

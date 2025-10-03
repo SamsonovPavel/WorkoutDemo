@@ -44,7 +44,7 @@ class NewWorkoutView: UIView {
     private lazy var titleTextFieldView = TitleTextFieldView(title: "Название тренировки")
     private lazy var durationTextFieldView = TitleTextFieldView(title: "Длительность (мин)")
     
-    private lazy var addWorkoutButton = AddWorkoutButton()
+    private lazy var addWorkoutButton = WorkoutButton(style: .add)
     private var bindings = Set<AnyCancellable>()
     
     init() {

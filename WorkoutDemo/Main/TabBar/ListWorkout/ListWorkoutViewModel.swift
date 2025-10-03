@@ -8,18 +8,27 @@
 import Combine
 
 protocol ListWorkoutViewModelProtocol {
-    func bind() -> ListWorkoutViewModel.Output
+    func bind(_ input: ListWorkoutViewModel.Input) -> ListWorkoutViewModel.Output
 }
 
 // MARK: - ViewModel
 
 class ListWorkoutViewModel: ListWorkoutViewModelProtocol {
     
+    typealias RowType = ListCollectionDataSource.RowType
+    
     private let addWorkoutSubject = PassthroughSubject<Void, Never>()
+    private let didSelectRowSubject = PassthroughSubject<RowType, Never>()
+    
     private var bindings = Set<AnyCancellable>()
     
-    func bind() -> Output {
-        .init(addWorkoutPublisher: addWorkoutSubject
+    func bind(_ input: Input) -> Output {
+        input.didSelectRow
+            .receive(on: .mainQueue)
+            .sink(receiveValue: didSelectRowSubject.send)
+            .store(in: &bindings)
+        
+        return .init(addWorkoutPublisher: addWorkoutSubject
             .eraseToAnyPublisher()
         )
     }
@@ -27,7 +36,9 @@ class ListWorkoutViewModel: ListWorkoutViewModelProtocol {
 
 extension ListWorkoutViewModel {
     
-    struct Input {}
+    struct Input {
+        let didSelectRow:AnyPublisher<RowType, Never>
+    }
     
     struct Output {
         let addWorkoutPublisher: AnyPublisher<Void, Never>
@@ -37,5 +48,11 @@ extension ListWorkoutViewModel {
 extension ListWorkoutViewModel: ListWorkoutModuleInput {
     func updateList() {
         addWorkoutSubject.send()
+    }
+}
+
+extension ListWorkoutViewModel: ListWorkoutModuleOutput {
+    var didSelectRow: AnyPublisher<RowType, Never> {
+        didSelectRowSubject.eraseToAnyPublisher()
     }
 }

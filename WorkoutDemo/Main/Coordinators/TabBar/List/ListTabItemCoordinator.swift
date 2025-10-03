@@ -26,7 +26,27 @@ class ListTabItemCoordinator: TabBarItemCoordinator {
         return asEmpty()
     }
     
-    private func bind(_ module: ListWorkoutModule) {}
+    private func bind(_ module: ListWorkoutModule) {
+        module.output
+            .didSelectRow
+            .receive(on: .mainQueue)
+            .sink { [unowned self] rowType in
+                switch rowType {
+                case .cell(let model):
+                    showDetailScreen(model)
+                }
+                
+            }.store(in: &bindings)
+    }
+    
+    private func bind(_ module: DetailModule) {
+        module.output
+            .startWorkout
+            .receive(on: .mainQueue)
+            .sink { [unowned self] model in
+                print(model)
+            }.store(in: &bindings)
+    }
 }
 
 extension ListTabItemCoordinator {
@@ -40,5 +60,18 @@ extension ListTabItemCoordinator {
         bind(module)
         
         router.setRootViewController(module.viewController)
+    }
+    
+    private func showDetailScreen(_ model: ListCollectionCell.Model) {
+        let model = DetailViewModel.Model(
+            title: model.title,
+            date: model.date,
+            duration: model.duration
+        )
+        
+        let module = resolve(DetailModule.self, argument: model)
+        bind(module)
+        
+        router.pushTo(module.viewController)
     }
 }

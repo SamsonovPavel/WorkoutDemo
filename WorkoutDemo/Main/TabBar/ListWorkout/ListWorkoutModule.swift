@@ -7,8 +7,12 @@
 
 import Combine
 
+protocol ListWorkoutModuleOutput {
+    var didSelectRow: AnyPublisher<ListCollectionDataSource.RowType, Never> { get }
+}
+
 protocol ListWorkoutModuleInput {
     func updateList()
 }
 
-class ListWorkoutModule: InputModule<ListWorkoutModuleInput> {}
+class ListWorkoutModule: BaseModule<ListWorkoutModuleInput, ListWorkoutModuleOutput> {}

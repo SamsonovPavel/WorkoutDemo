@@ -15,12 +15,21 @@ class ListTabAssembly: Assembly {
             
             return ListWorkoutModule(
                 input: viewModel,
+                output: viewModel,
                 viewController: viewController
             )
             
         }.inObjectScope(.container)
 
-        // Регистрация других модулей
+        container.register(DetailModule.self) { (resolver, model: DetailViewModel.Model) in
+            let viewModel = DetailViewModel(model: model)
+            let viewController = DetailViewController(viewModel)
+            
+            return DetailModule(
+                output: viewModel,
+                viewController: viewController
+            )
+        }
     }
 }
 
