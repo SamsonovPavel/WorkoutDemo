@@ -41,7 +41,7 @@ class DetailViewController: BaseViewController {
         return label
     }()
     
-    private let workoutButton = WorkoutButton(style: .normal)
+    private let workoutButton = WorkoutButton(style: .begin)
     
     init(_ model: DetailViewModelProtocol) {
         viewModel = model

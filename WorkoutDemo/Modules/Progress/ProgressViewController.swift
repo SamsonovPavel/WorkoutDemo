@@ -27,6 +27,16 @@ class ProgressViewController: BaseViewController {
         ) ?? 0,
     )
     
+    private lazy var titleLabel: UILabel = {
+        let label = UILabel()
+        label.text = viewModel.currentModel.title
+        label.textAlignment = .center
+        label.font = .systemFont(ofSize: 24, weight: .bold)
+        label.textColor = .label
+        
+        return label
+    }()
+    
     private let progressButton = WorkoutButton(style: .progress)
     
     private var isProgress: Bool = false {
@@ -53,9 +63,15 @@ class ProgressViewController: BaseViewController {
     
     private func setupViews() {
         view.addSubviews(
+            titleLabel,
             circleProgressView,
             progressButton
         )
+        
+        titleLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview().inset(44)
+            make.left.right.equalToSuperview().inset(20)
+        }
         
         circleProgressView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
