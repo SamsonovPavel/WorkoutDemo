@@ -19,6 +19,15 @@ class AboutAppViewController: BaseViewController {
     
     private let didSelectRowSubject = PassthroughSubject<Void, Never>()
     
+    private lazy var titleLabel: UILabel = {
+        let label = UILabel()
+        label.text = TabItemType.aboutApp.title
+        label.font = .systemFont(ofSize: 20, weight: .medium)
+        label.textAlignment = .center
+        
+        return label
+    }()
+    
     private let logoutButton = WorkoutButton(style: .logout)
     private let viewModel: AboutAppViewModelProtocol
     
@@ -37,11 +46,19 @@ class AboutAppViewController: BaseViewController {
     }
 
     private func setupViews() {
-        view.addSubview(logoutButton)
+        view.addSubviews(
+            titleLabel,
+            logoutButton
+        )
+        
+        titleLabel.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview().offset(-150)
+        }
         
         logoutButton.snp.makeConstraints { make in
             make.left.right.equalToSuperview().inset(20)
-            make.top.equalToSuperview().inset(100)
+            make.bottom.equalToSuperview().inset(108)
             make.height.equalTo(48)
         }
         

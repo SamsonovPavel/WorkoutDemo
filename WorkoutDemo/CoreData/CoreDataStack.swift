@@ -85,4 +85,14 @@ extension CoreDataStack {
             self.saveContext()            
         }
     }
+    
+    func deleteAllWorkouts() {
+        Task(priority: .medium) {
+            let allWorkouts = try fetchAllWorkouts()
+            
+            for workout in allWorkouts {
+                workout.deleteWorkout()
+            }
+        }
+    }
 }

@@ -9,6 +9,5 @@ enum Factory {
     
     static let route = RouteFactory()
     static let tabBar = TabBarFactory()
-    
-    // Другие зависимости
+    static let coreDataStack = CoreDataFactory()
 }

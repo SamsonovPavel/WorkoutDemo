@@ -30,7 +30,7 @@ class HomeViewModel: HomeViewModelProtocol {
                 
                 Task(priority: .medium) {
                     do {
-                        try addWorkout(
+                        try Factory.coreDataStack.addWorkout(
                             title: model.title,
                             duration: model.duration
                         )
@@ -49,16 +49,6 @@ class HomeViewModel: HomeViewModelProtocol {
             }.store(in: &bindings)
         
         return .init()
-    }
-    
-    // Добавляем в CoreData тренировку
-    private func addWorkout(title: String, duration: String) throws {
-        let shared = CoreDataStack.shared
-        
-        shared.addNewWorkout(
-            title: title,
-            duration: duration
-        )
     }
 }
 

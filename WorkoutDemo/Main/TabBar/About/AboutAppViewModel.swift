@@ -34,8 +34,10 @@ class AboutAppViewModel: AboutAppViewModelProtocol {
     }
     
     private func logout() {
+        CoreDataStack.shared.deleteAllWorkouts()
         UserDefaults.loginName = ""
-        logoutSubject.send(())
+
+        logoutSubject.send()
     }
 }
 

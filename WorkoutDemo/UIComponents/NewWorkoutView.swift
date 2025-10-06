@@ -100,7 +100,7 @@ class NewWorkoutView: UIView {
             return nil
         }
         
-        if duration < 100 {
+        if duration < 6000 {
             return Model(
                 title: title,
                 duration: textString

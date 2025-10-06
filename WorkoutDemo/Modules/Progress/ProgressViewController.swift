@@ -74,7 +74,8 @@ class ProgressViewController: BaseViewController {
         }
         
         circleProgressView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.center.equalToSuperview()
+            make.size.equalTo(250)
         }
         
         progressButton.snp.makeConstraints { make in

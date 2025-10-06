@@ -36,7 +36,7 @@ class CircleProgressView: UIView {
         let label = UILabel()
         label.textColor = .white
         label.text = timeFormattedString(timeInterval)
-        label.font = .systemFont(ofSize: 40, weight: .bold)
+        label.font = .systemFont(ofSize: 36, weight: .bold)
         label.textAlignment = .center
         
         return label
@@ -56,7 +56,6 @@ class CircleProgressView: UIView {
         
         setupViews()
         startTimer(interval: timeInterval)
-        startAnimatePulse()
     }
     
     @available(*, unavailable)
@@ -64,7 +63,7 @@ class CircleProgressView: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        refreshPosition()
+        startAnimatePulse()
     }
     
     private func setupViews() {
@@ -78,16 +77,10 @@ class CircleProgressView: UIView {
         trackShapeLayer.strokeEnd = 0
         
         progressTimeLabel.snp.makeConstraints { make in
-            make.center.equalToSuperview()
+            make.edges.equalToSuperview().inset(16)
         }
     }
-    
-    private func refreshPosition() {
-        shapeLayer.position = center
-        pulseShapeLayer.position = center
-        trackShapeLayer.position = center
-    }
-    
+
     private func createCircle(strokeColor: UIColor, fillColor: UIColor) -> CAShapeLayer {
         let layer = CAShapeLayer()
         
@@ -102,7 +95,7 @@ class CircleProgressView: UIView {
         layer.path = circularPath.cgPath
         layer.strokeColor = strokeColor.cgColor
         layer.fillColor = fillColor.cgColor
-        layer.position = center
+        layer.position = CGPoint(x: 125, y: 125)
         layer.lineCap = .round
         layer.lineWidth = 12
         
@@ -110,12 +103,15 @@ class CircleProgressView: UIView {
     }
     
     private func timeFormattedString(_ timeInterval: TimeInterval) -> String {
-        let seconds = Int(timeInterval.truncatingRemainder(dividingBy: 60))
-        let minutes = Int(timeInterval.truncatingRemainder(dividingBy: 3600) / 60)
+        let timeInterval = Int(timeInterval)
         
-        return String(format: "%.2d:%.2d", minutes, seconds)
+        let hours = timeInterval / 3600
+        let minutes = (timeInterval / 60) % 60
+        let seconds = timeInterval % 60
+        
+        return String(format: "%.2d:%.2d:%.2d", hours, minutes, seconds)
     }
-    
+
     private func startAnimatePulse() {
         let animation = CABasicAnimation(keyPath: "transform.scale")
         animation.toValue = 1.1
@@ -162,6 +158,7 @@ class CircleProgressView: UIView {
     
     func startTimer() {
         startTimer(interval: timeInterval)
+        startAnimatePulse()
     }
     
     func stopTimer() {
@@ -170,7 +167,7 @@ class CircleProgressView: UIView {
             .cancel()
         
         timer = Timer.publish(every: 1, on: .main, in: .common)
-//        timeInterval = trackShapeLayer.strokeEnd
+        stopAnimatePulse()
     }
 }
 

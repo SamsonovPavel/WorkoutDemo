@@ -27,9 +27,10 @@ final class LoginViewModel: LoginViewModelProtocol {
 
     func bind(_ input: LoginViewModelInput) {
         input.success
-            .receive(on: .mainQueue)
             .sink { [unowned self] loginName in
                 UserDefaults.loginName = loginName
+                Factory.coreDataStack.mockAddWorkout()
+                
                 completeSubject.send()
                 
             }.store(in: &bindings)

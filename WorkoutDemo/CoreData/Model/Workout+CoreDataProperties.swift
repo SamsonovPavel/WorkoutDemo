@@ -23,7 +23,7 @@ extension Workout {
 
 }
 
-extension Workout : Identifiable {
+extension Workout: Identifiable {
 
     func updateWorkout(title: String, duration: String, date: Date) {
         self.title = title

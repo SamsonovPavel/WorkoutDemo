@@ -42,7 +42,7 @@ class TitleTextFieldView: UIView {
             switch self {
             case .name: "Введите Ваше имя"
             case .nameWorkout: "Название тренировки"
-            case .duration: "Длительность (до 100 мин)"
+            case .duration: "Длительность (мин)"
             }
         }
     }
